@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MIKSIST Anime Run (00:00:00)</title>
+    <style>
+        :root {
+            --bg-overlay: rgba(0, 0, 0, 0.4); 
+            --panel-bg: rgba(15, 15, 20, 0.95);
+            --text-color: #e0e0e0;
+            --accent-color: #8c9eff;
+            --meme-word-color: #ff79c6;
+            --record-row-bg: rgba(255, 255, 255, 0.05);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #050505;
+            color: var(--text-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .background-gallery {
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            z-index: -2;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            transform: rotate(-15deg);
+            animation: floatingGallery 20s linear infinite;
+        }
+
+        .media-item {
+            width: 320px;
+            height: 190px;
+            object-fit: cover;
+            border-radius: 6px;
+            opacity: 0.85;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.7);
+            transition: opacity 0.3s;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-overlay);
+            z-index: -1;
+        }
+
+        @keyframes floatingGallery {
+            0% { transform: rotate(-15deg) translateY(0); }
+            100% { transform: rotate(-15deg) translateY(-250px); }
+        }
+
+        .header-acronym {
+            position: absolute;
+            top: 40px;
+            width: 100%;
+            text-align: center;
+            z-index: 20;
+            pointer-events: none;
+        }
+
+        .acronym-title {
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            background: rgba(0, 0, 0, 0.7);
+            display: inline-block;
+            padding: 15px 40px;
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+            border: 2px solid var(--meme-word-color);
+            box-shadow: 0 0 20px rgba(255, 121, 198, 0.4);
+            font-weight: bold;
+        }
+
+        .word-group {
+            display: inline-block;
+            margin: 0 5px;
+        }
+
+        .first-letter {
+            color: var(--meme-word-color);
+            font-size: 2rem;
+            text-shadow: 2px 2px 0 #000;
+        }
+        
+        .rest-word {
+            color: #fff;
+            font-size: 1.2rem;
+        }
+
+        .main-screen {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            width: 100%;
+            z-index: 10;
+        }
+
+        .timer-display {
+            font-size: 8rem;
+            font-weight: 300;
+            letter-spacing: 5px;
+            margin-bottom: 2rem;
+            font-variant-numeric: tabular-nums;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+
+        .controls {
+            display: flex;
+            gap: 20px;
+        }
+
+        button {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--text-color);
+            color: var(--text-color);
+            padding: 12px 35px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            backdrop-filter: blur(5px);
+        }
+
+        button:hover {
+            background: var(--text-color);
+            color: #000;
+        }
+
+        .archive-toggle-btn {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            z-index: 30;
+            background: rgba(0,0,0,0.5);
+            border: 2px solid rgba(255,255,255,0.2);
+            color: #fff;
+            cursor: pointer;
+        }
+        .archive-toggle-btn:hover { background: var(--meme-word-color); border-color: var(--meme-word-color); }
+
+        .archive-drawer {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 350px;
+            height: 100%;
+            background: var(--panel-bg);
+            box-shadow: -5px 0 30px rgba(0,0,0,0.8);
+            transition: right 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            border-left: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .archive-drawer.open { right: 0; }
+
+        .drawer-header {
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .drawer-title {
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--meme-word-color);
+        }
+
+        .close-btn {
+            background: transparent;
+            border: none;
+            font-size: 2rem;
+            padding: 0;
+            line-height: 1;
+            color: #888;
+            cursor: pointer;
+        }
+        .close-btn:hover { color: #fff; }
+
+        .drawer-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .json-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .json-btn {
+            flex: 1;
+            font-size: 0.8rem;
+            padding: 8px;
+            border: 1px solid #444;
+        }
+
+        .record-list { list-style: none; padding: 0; margin: 0; }
+
+        .record-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px;
+            margin-bottom: 8px;
+            background: var(--record-row-bg);
+            border-radius: 4px;
+            border-left: 3px solid transparent;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+
+        .record-item:nth-child(1) { border-left-color: gold; background: linear-gradient(90deg, rgba(255,215,0,0.1), transparent); }
+        .record-item:nth-child(2) { border-left-color: silver; }
+        .record-item:nth-child(3) { border-left-color: #cd7f32; }
+
+        .rank { opacity: 0.5; font-size: 0.9em; }
+        .time-val { font-family: monospace; font-size: 1.1em; }
+        .new-record-tag { font-size: 0.7em; color: var(--meme-word-color); margin-left: 5px; text-transform: uppercase;}
+
+        .backdrop {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 90;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        .backdrop.active { opacity: 1; pointer-events: all; }
+
+        @media (max-width: 600px) {
+            .archive-drawer { width: 85%; }
+            .timer-display { font-size: 4rem; }
+            .acronym-title { padding: 10px 20px; }
+            .first-letter { font-size: 1.5rem; }
+            .rest-word { font-size: 0.9rem; }
+            .header-acronym { top: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="background-gallery" id="gallery"></div>
+    <div class="overlay"></div>
+
+    <div class="header-acronym">
+        <div class="acronym-title">
+            <div class="word-group"><span class="first-letter">M</span><span class="rest-word">aids</span></div>
+            <div class="word-group"><span class="first-letter">I</span><span class="rest-word">sekai</span></div>
+            <div class="word-group"><span class="first-letter">K</span><span class="rest-word">awaii</span></div>
+            <div class="word-group"><span class="first-letter">S</span><span class="rest-word">enpai</span></div>
+            <div class="word-group"><span class="first-letter">I</span><span class="rest-word">dols</span></div>
+            <div class="word-group"><span class="first-letter">S</span><span class="rest-word">peedrun</span></div>
+            <div class="word-group"><span class="first-letter">T</span><span class="rest-word">ime</span></div>
+        </div>
+    </div>
+
+    <div class="main-screen">
+        <div class="timer-display" id="display">00:00:00</div>
+        <div class="controls">
+            <button onclick="timerApp.start()">Старт</button>
+            <button onclick="timerApp.pause()">Пауза</button>
+            <button onclick="timerApp.stop()">Стоп</button>
+        </div>
+    </div>
+
+    <button class="archive-toggle-btn" onclick="toggleDrawer()">A</button>
+    <div class="backdrop" id="backdrop" onclick="toggleDrawer()"></div>
+
+    <div class="archive-drawer" id="drawer">
+        <div class="drawer-header">
+            <div class="drawer-title">Архив Забегов</div>
+            <button class="close-btn" onclick="toggleDrawer()">&times;</button>
+        </div>
+        <div class="drawer-content">
+            <div class="json-controls">
+                <button class="json-btn" onclick="downloadJSON()">⬇ Скачать JSON</button>
+                <button class="json-btn" onclick="document.getElementById('fileInput').click()">⬆ Загрузить</button>
+                <input type="file" id="fileInput" style="display: none;" onchange="loadJSON(this)">
+            </div>
+            
+            <ul class="record-list" id="recordsList"></ul>
+        </div>
+    </div>
+
+    <script>
+        const mediaFiles = [
+            { type: 'video', file: '1.mp4' },
+            { type: 'video', file: '2.mp4' },
+            { type: 'video', file: '3.mp4' },
+            { type: 'video', file: '4.mp4' },
+            { type: 'video', file: '5.mp4' },
+            { type: 'image', file: '6.jpg' },
+            { type: 'video', file: '7.mp4' },
+            { type: 'image', file: '8.jpg' },
+            { type: 'image', file: '9.jpg' },
+            { type: 'image', file: '10.jpg' },
+            { type: 'image', file: '11.jpg' },
+            { type: 'video', file: '12.mp4' },
+            { type: 'image', file: '13.jpg' },
+            { type: 'video', file: '14.mp4' },
+            { type: 'image', file: '15.jpg' },
+        ];
+        const FOLDER_PATH = 'Anime clear/';
+
+        const galleryContainer = document.getElementById('gallery');
+        const itemsToRender = Array(5).fill(mediaFiles).flat(); 
+
+        itemsToRender.forEach(item => {
+            let el;
+            if (item.type === 'video') {
+                el = document.createElement('video');
+                el.src = FOLDER_PATH + item.file;
+                el.autoplay = true;
+                el.loop = true;
+                el.muted = true;
+                el.playsInline = true;
+            } else {
+                el = document.createElement('img');
+                el.src = FOLDER_PATH + item.file;
+            }
+            el.className = 'media-item';
+            el.onerror = function() { this.style.display = 'none'; };
+            galleryContainer.appendChild(el);
+        });
+
+        function toggleDrawer() {
+            document.getElementById('drawer').classList.toggle('open');
+            document.getElementById('backdrop').classList.toggle('active');
+        }
+
+        const initialRecords = [
+            
+        ];
+
+        let savedRecords = JSON.parse(localStorage.getItem('animeRunRecords')) || initialRecords;
+
+        function timeToSeconds(timeStr) {
+            const p = timeStr.split(':').map(Number);
+            return p[0] * 3600 + p[1] * 60 + p[2];
+        }
+
+        function renderRecords(highlightTimeStr = null) {
+            const listEl = document.getElementById('recordsList');
+            listEl.innerHTML = '';
+            
+            savedRecords.sort((a, b) => timeToSeconds(b) - timeToSeconds(a));
+            
+            localStorage.setItem('animeRunRecords', JSON.stringify(savedRecords));
+
+            savedRecords.forEach((timeString, index) => {
+                const li = document.createElement('li');
+                li.className = 'record-item';
+                
+                let extraTag = '';
+                if (highlightTimeStr && timeString === highlightTimeStr) { 
+                     li.style.borderLeftColor = '#ff79c6';
+                     extraTag = '<span class="new-record-tag">NEW!</span>';
+                }
+
+                li.innerHTML = `
+                    <span class="rank">#${index + 1}</span>
+                    <span class="time-val">${timeString}</span>
+                `;
+                listEl.appendChild(li);
+            });
+        }
+
+        function downloadJSON() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(savedRecords));
+            const downloadAnchorNode = document.createElement('a');
+            downloadAnchorNode.setAttribute("href", dataStr);
+            downloadAnchorNode.setAttribute("download", "records.json");
+            document.body.appendChild(downloadAnchorNode);
+            downloadAnchorNode.click();
+            downloadAnchorNode.remove();
+        }
+
+        function loadJSON(input) {
+            const file = input.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const loadedData = JSON.parse(e.target.result);
+                    if (Array.isArray(loadedData)) {
+                        savedRecords = loadedData;
+                        renderRecords();
+                        alert('Рекорды успешно загружены!');
+                    } else {
+                        alert('Ошибка: Неверный формат файла');
+                    }
+                } catch (error) {
+                    alert('Ошибка чтения JSON');
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        class Stopwatch {
+            constructor() {
+                this.currentTime = 0;
+                this.isRunning = false;
+                this.interval = null;
+                this.display = document.getElementById('display');
+            }
+
+            format(totalSeconds) {
+                const h = Math.floor(totalSeconds / 3600).toString().padStart(2, '0');
+                const m = Math.floor((totalSeconds % 3600) / 60).toString().padStart(2, '0');
+                const s = (totalSeconds % 60).toString().padStart(2, '0');
+                return `${h}:${m}:${s}`;
+            }
+
+            render() {
+                this.display.textContent = this.format(this.currentTime);
+            }
+
+            start() {
+                if (this.isRunning) return;
+                this.isRunning = true;
+                this.interval = setInterval(() => {
+                    this.currentTime++;
+                    this.render();
+                }, 1000);
+            }
+
+            pause() {
+                this.isRunning = false;
+                clearInterval(this.interval);
+            }
+
+            stop() {
+                this.pause();
+
+                if (this.currentTime >= 900) { 
+                    const timeString = this.format(this.currentTime);
+                    
+                    savedRecords.push(timeString); 
+                    renderRecords(timeString); 
+                    
+                    if(!document.getElementById('drawer').classList.contains('open')) {
+                        toggleDrawer();
+                    }
+                }
+
+                this.currentTime = 0;
+                this.render();
+            }
+        }
+
+        const timerApp = new Stopwatch();
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderRecords();
+        });
+
+    </script>
+</body>
+</html>
