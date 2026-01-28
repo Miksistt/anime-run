@@ -6,18 +6,19 @@
     <title>MIKSIST Anime Run (00:00:00)</title>
     <style>
         :root {
-            --bg-overlay: rgba(0, 0, 0, 0.4); 
-            --panel-bg: rgba(15, 15, 20, 0.95);
-            --text-color: #e0e0e0;
-            --accent-color: #8c9eff;
-            --meme-word-color: #ff79c6;
-            --record-row-bg: rgba(255, 255, 255, 0.05);
+            --bg-overlay: rgba(0, 0, 0, 0.6);
+            --panel-bg: rgba(10, 10, 15, 0.98);
+            --text-color: #f0f0f0;
+            --accent-color: #9fa8ff;
+            --meme-word-color: #ff6bc9;
+            --record-row-bg: rgba(255, 255, 255, 0.08);
+            --timer-glow: rgba(255, 121, 198, 0.3);
         }
 
         body {
             margin: 0;
             padding: 0;
-            background-color: #050505;
+            background-color: #0a0a0a;
             color: var(--text-color);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             height: 100vh;
@@ -27,26 +28,32 @@
 
         .background-gallery {
             position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
+            top: -100%;
+            left: -100%;
+            width: 300%;
+            height: 300%;
             z-index: -2;
             display: flex;
             flex-wrap: wrap;
-            gap: 15px;
-            transform: rotate(-15deg);
-            animation: floatingGallery 20s linear infinite;
+            gap: 30px;
+            transform: rotate(-12deg);
+            animation: floatingGallery 120s linear infinite;
         }
 
         .media-item {
-            width: 320px;
-            height: 190px;
+            width: 340px;
+            height: 200px;
             object-fit: cover;
-            border-radius: 6px;
-            opacity: 0.85;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.7);
-            transition: opacity 0.3s;
+            border-radius: 8px;
+            opacity: 0.7;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.9);
+            transition: opacity 0.4s, transform 0.4s;
+            filter: saturate(1.1) contrast(1.05);
+        }
+
+        .media-item:hover {
+            opacity: 0.9;
+            transform: scale(1.02);
         }
 
         .overlay {
@@ -55,18 +62,20 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: var(--bg-overlay);
+            background: linear-gradient(45deg, rgba(0,0,0,0.7), rgba(20,0,40,0.4));
             z-index: -1;
         }
 
         @keyframes floatingGallery {
-            0% { transform: rotate(-15deg) translateY(0); }
-            100% { transform: rotate(-15deg) translateY(-250px); }
+            0% { transform: rotate(-12deg) translateY(0) translateX(0); }
+            25% { transform: rotate(-12deg) translateY(-340px) translateX(100px); }
+            50% { transform: rotate(-12deg) translateY(-680px) translateX(0); }
+            75% { transform: rotate(-12deg) translateY(-1020px) translateX(-100px); }
+            100% { transform: rotate(-12deg) translateY(-1360px) translateX(0); }
         }
-
         .header-acronym {
             position: absolute;
-            top: 40px;
+            top: 30px;
             width: 100%;
             text-align: center;
             z-index: 20;
@@ -74,33 +83,48 @@
         }
 
         .acronym-title {
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            background: rgba(0, 0, 0, 0.7);
+            letter-spacing: 3px;
+            background: rgba(0, 0, 0, 0.8);
             display: inline-block;
-            padding: 15px 40px;
-            border-radius: 50px;
-            backdrop-filter: blur(10px);
+            padding: 18px 60px;
+            border-radius: 60px;
+            backdrop-filter: blur(15px);
             border: 2px solid var(--meme-word-color);
-            box-shadow: 0 0 20px rgba(255, 121, 198, 0.4);
-            font-weight: bold;
+            box-shadow: 0 0 30px rgba(255, 107, 201, 0.5);
+            font-weight: 800;
+            transition: transform 0.3s;
+            max-width: 95%;
+            margin: 100 auto;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .acronym-title:hover {
+            transform: translateY(-3px);
         }
 
         .word-group {
             display: inline-block;
-            margin: 0 5px;
+            margin: 0 8px;
+            position: relative;
         }
 
         .first-letter {
             color: var(--meme-word-color);
-            font-size: 2rem;
-            text-shadow: 2px 2px 0 #000;
+            font-size: 2.2rem;
+            text-shadow: 3px 3px 0 #000;
+            position: relative;
+            z-index: 1;
         }
         
         .rest-word {
             color: #fff;
-            font-size: 1.2rem;
+            font-size: 1.3rem;
+            font-weight: 600;
+            text-shadow: 1px 1px 2px #000;
         }
 
         .main-screen {
@@ -114,43 +138,96 @@
         }
 
         .timer-display {
-            font-size: 8rem;
-            font-weight: 300;
-            letter-spacing: 5px;
-            margin-bottom: 2rem;
+            font-size: 9.5rem;
+            font-weight: 200;
+            letter-spacing: 8px;
+            margin-bottom: 3rem;
             font-variant-numeric: tabular-nums;
-            text-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            text-shadow: 0 6px 20px rgba(0,0,0,0.7);
+            color: #fff;
+            position: relative;
+            padding: 20px 40px;
+            border-radius: 20px;
+            background: rgba(0,0,0,0.2);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: inset 0 0 50px rgba(255,107,201,0.1);
+        }
+
+        .timer-display::after {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            border-radius: 25px;
+            background: linear-gradient(45deg, transparent, var(--timer-glow), transparent);
+            z-index: -1;
+            opacity: 0.5;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.7; }
         }
 
         .controls {
             display: flex;
-            gap: 20px;
+            gap: 25px;
         }
 
         button {
-            background: rgba(0,0,0,0.3);
-            border: 1px solid var(--text-color);
+            background: linear-gradient(145deg, rgba(0,0,0,0.4), rgba(50,50,70,0.3));
+            border: 1.5px solid var(--accent-color);
             color: var(--text-color);
-            padding: 12px 35px;
-            font-size: 1.1rem;
+            padding: 15px 45px;
+            font-size: 1.2rem;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            backdrop-filter: blur(5px);
+            letter-spacing: 3px;
+            backdrop-filter: blur(10px);
+            border-radius: 8px;
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        button:hover::before {
+            left: 100%;
         }
 
         button:hover {
-            background: var(--text-color);
+            background: var(--accent-color);
             color: #000;
+            border-color: #fff;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(159, 168, 255, 0.4);
+        }
+
+        button:active {
+            transform: translateY(-2px);
         }
 
         .archive-toggle-btn {
             position: absolute;
             top: 30px;
             right: 30px;
-            width: 50px;
-            height: 50px;
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
             padding: 0;
             display: flex;
@@ -158,120 +235,453 @@
             align-items: center;
             font-weight: bold;
             z-index: 30;
-            background: rgba(0,0,0,0.5);
-            border: 2px solid rgba(255,255,255,0.2);
+            background: rgba(0,0,0,0.6);
+            border: 2px solid var(--meme-word-color);
             color: #fff;
             cursor: pointer;
+            font-size: 1.5rem;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
         }
-        .archive-toggle-btn:hover { background: var(--meme-word-color); border-color: var(--meme-word-color); }
+        
+        .archive-toggle-btn:hover {
+            background: var(--meme-word-color);
+            border-color: #fff;
+            transform: rotate(90deg) scale(1.1);
+            box-shadow: 0 0 30px rgba(255, 107, 201, 0.7);
+        }
+
+        .randomizer-toggle-btn {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            z-index: 30;
+            background: rgba(0,0,0,0.6);
+            border: 2px solid #ff6bc9;
+            color: #fff;
+            cursor: pointer;
+            font-size: 1.8rem;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        }
+
+        .randomizer-toggle-btn:hover {
+            background: #ff6bc9;
+            border-color: #fff;
+            transform: scale(1.1);
+            box-shadow: 0 0 30px rgba(255, 107, 201, 0.7);
+        }
 
         .archive-drawer {
             position: fixed;
             top: 0;
-            right: -400px;
-            width: 350px;
+            right: -420px;
+            width: 380px;
             height: 100%;
             background: var(--panel-bg);
-            box-shadow: -5px 0 30px rgba(0,0,0,0.8);
-            transition: right 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: -10px 0 40px rgba(0,0,0,0.9);
+            transition: right 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
             z-index: 100;
             display: flex;
             flex-direction: column;
-            border-left: 1px solid rgba(255,255,255,0.1);
+            border-left: 2px solid rgba(255,107,201,0.3);
         }
 
-        .archive-drawer.open { right: 0; }
+        .archive-drawer.open {
+            right: 0;
+        }
 
         .drawer-header {
-            padding: 20px;
+            padding: 25px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 2px solid rgba(255,107,201,0.2);
+            background: rgba(0,0,0,0.3);
         }
 
         .drawer-title {
-            font-size: 1.2rem;
+            font-size: 1.4rem;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
             color: var(--meme-word-color);
+            font-weight: 700;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.5);
         }
 
         .close-btn {
             background: transparent;
             border: none;
-            font-size: 2rem;
+            font-size: 2.5rem;
             padding: 0;
             line-height: 1;
-            color: #888;
+            color: #aaa;
             cursor: pointer;
+            transition: color 0.3s;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
         }
-        .close-btn:hover { color: #fff; }
+        
+        .close-btn:hover {
+            color: #fff;
+            background: rgba(255,255,255,0.1);
+        }
 
         .drawer-content {
             flex: 1;
             overflow-y: auto;
-            padding: 20px;
+            padding: 25px;
         }
 
         .json-controls {
             display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
+            gap: 15px;
+            margin-bottom: 25px;
         }
+        
         .json-btn {
             flex: 1;
-            font-size: 0.8rem;
-            padding: 8px;
-            border: 1px solid #444;
+            font-size: 0.9rem;
+            padding: 12px;
+            border: 1px solid #555;
+            background: rgba(0,0,0,0.4);
+            border-radius: 6px;
+        }
+        
+        .json-btn:hover {
+            background: rgba(255,107,201,0.2);
+            border-color: var(--meme-word-color);
         }
 
-        .record-list { list-style: none; padding: 0; margin: 0; }
+        .record-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
 
         .record-item {
             display: flex;
             justify-content: space-between;
-            padding: 12px;
-            margin-bottom: 8px;
+            align-items: center;
+            padding: 18px 20px;
+            margin-bottom: 12px;
             background: var(--record-row-bg);
-            border-radius: 4px;
-            border-left: 3px solid transparent;
-            animation: fadeIn 0.5s ease;
+            border-radius: 10px;
+            border-left: 4px solid transparent;
+            border-right: 1px solid rgba(255,255,255,0.05);
+            animation: fadeInUp 0.6s ease;
+            transition: transform 0.3s, background 0.3s;
         }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+        .record-item:hover {
+            transform: translateX(-5px);
+            background: rgba(255,255,255,0.12);
+        }
 
-        .record-item:nth-child(1) { border-left-color: gold; background: linear-gradient(90deg, rgba(255,215,0,0.1), transparent); }
-        .record-item:nth-child(2) { border-left-color: silver; }
-        .record-item:nth-child(3) { border-left-color: #cd7f32; }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-        .rank { opacity: 0.5; font-size: 0.9em; }
-        .time-val { font-family: monospace; font-size: 1.1em; }
-        .new-record-tag { font-size: 0.7em; color: var(--meme-word-color); margin-left: 5px; text-transform: uppercase;}
+        .record-item:nth-child(1) {
+            border-left-color: gold;
+            background: linear-gradient(90deg, rgba(255,215,0,0.15), transparent);
+            box-shadow: 0 5px 15px rgba(255,215,0,0.1);
+        }
+        
+        .record-item:nth-child(2) {
+            border-left-color: silver;
+            background: linear-gradient(90deg, rgba(192,192,192,0.1), transparent);
+        }
+        
+        .record-item:nth-child(3) {
+            border-left-color: #cd7f32;
+            background: linear-gradient(90deg, rgba(205,127,50,0.1), transparent);
+        }
+
+        .rank {
+            opacity: 0.7;
+            font-size: 1em;
+            font-weight: 600;
+            color: #aaa;
+            min-width: 40px;
+        }
+        
+        .time-val {
+            font-family: 'Courier New', monospace;
+            font-size: 1.4em;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: #fff;
+        }
+        
+        .new-record-tag {
+            font-size: 0.8em;
+            color: var(--meme-word-color);
+            margin-left: 10px;
+            text-transform: uppercase;
+            font-weight: 700;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
 
         .backdrop {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5);
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
             z-index: 90;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.3s;
+            transition: opacity 0.4s;
+            backdrop-filter: blur(3px);
         }
-        .backdrop.active { opacity: 1; pointer-events: all; }
+        
+        .backdrop.active {
+            opacity: 1;
+            pointer-events: all;
+        }
 
-        @media (max-width: 600px) {
-            .archive-drawer { width: 85%; }
-            .timer-display { font-size: 4rem; }
-            .acronym-title { padding: 10px 20px; }
-            .first-letter { font-size: 1.5rem; }
-            .rest-word { font-size: 0.9rem; }
-            .header-acronym { top: 20px; }
+        .randomizer-drawer {
+            position: fixed;
+            top: 0;
+            left: -420px;
+            width: 380px;
+            height: 100%;
+            background: var(--panel-bg);
+            box-shadow: 10px 0 40px rgba(0,0,0,0.9);
+            transition: left 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            border-right: 2px solid rgba(255,107,201,0.3);
         }
+
+        .randomizer-drawer.open {
+            left: 0;
+        }
+
+        .randomizer-info {
+            background: rgba(0,0,0,0.3);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255,107,201,0.2);
+        }
+
+        .randomizer-info p {
+            margin: 0 0 15px 0;
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        .current-month, .next-available {
+            margin: 10px 0;
+            font-size: 0.95rem;
+        }
+
+        .current-month span, .next-available span {
+            color: #ff6bc9;
+            font-weight: bold;
+        }
+
+        .randomizer-result {
+            background: rgba(255,107,201,0.1);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 20px;
+            border: 2px solid #ff6bc9;
+            animation: pulse 2s infinite;
+        }
+
+        .result-title {
+            font-size: 1rem;
+            color: #aaa;
+            margin-bottom: 10px;
+        }
+
+        .result-day {
+            font-size: 4rem;
+            font-weight: 900;
+            color: #ff6bc9;
+            text-shadow: 0 0 20px rgba(255,107,201,0.7);
+        }
+
+        .result-note {
+            font-size: 0.8rem;
+            color: #888;
+            margin-top: 10px;
+        }
+
+        .randomizer-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .generate-btn, .test-btn, .end-test-btn {
+            padding: 18px;
+            font-size: 1.2rem;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .generate-btn {
+            background: linear-gradient(145deg, #ff6bc9, #ff4da6);
+            color: white;
+        }
+
+        .generate-btn:hover {
+            background: linear-gradient(145deg, #ff4da6, #ff2a8a);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(255,107,201,0.4);
+        }
+
+        .generate-btn:disabled {
+            background: #555;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+            opacity: 0.7;
+        }
+
+        .test-btn {
+            background: linear-gradient(145deg, #9b5de5, #7b3dc9);
+            color: white;
+        }
+
+        .test-btn:hover {
+            background: linear-gradient(145deg, #7b3dc9, #5a2c9e);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(155, 93, 229, 0.4);
+        }
+
+        .end-test-btn {
+            background: linear-gradient(145deg, #f72585, #d00070);
+            color: white;
+        }
+
+        .end-test-btn:hover {
+            background: linear-gradient(145deg, #d00070, #a80058);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(247, 37, 133, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .acronym-title {
+                padding: 15px 40px;
+                font-size: 1.2rem;
+                letter-spacing: 2px;
+                max-width: 90%;
+                white-space: normal;
+                overflow: visible;
+                text-overflow: clip;
+            }
+            
+            .word-group {
+                margin: 0 3px;
+            }
+            
+            .first-letter {
+                font-size: 1.5rem;
+            }
+            
+            .rest-word {
+                font-size: 1rem;
+            }
+            
+            #celebrationText {
+            position: fixed;
+            top: 150px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center !important;
+            color: gold;
+            font-size: 1.8rem;
+            font-weight: bold;
+            text-shadow: 0 0 20px rgba(255,215,0,0.8);
+            z-index: 20;
+            animation: celebrationPulse 2s infinite;
+            pointer-events: none;
+            padding: 12px 25px;
+            background: rgba(0,0,0,0.7);
+            border-radius: 50px;
+            backdrop-filter: blur(15px);
+            border: 2px solid gold;
+            white-space: nowrap;
+            margin: 0 auto;
+            width: fit-content; 
+            max-width: 90vw;
+            }
+
+        }
+
+        @media (max-width: 480px) {
+            .acronym-title {
+                font-size: 0.9rem;
+                padding: 8px 15px;
+                letter-spacing: 1px;
+            }
+            
+            .celebrationText {
+                font-size: 1rem;
+                padding: 8px 15px;
+                border-radius: 30px;
+            }
+            
+            .timer-display {
+                font-size: 3.5rem;
+                letter-spacing: 2px;
+            }
+            
+            .first-letter {
+                font-size: 1.3rem;
+            }
+            
+            .rest-word {
+                font-size: 0.8rem;
+            }
+        }
+        #celebrationText {
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        box-sizing: border-box !important;
+        max-width: 90vw !important;
+        }
+
     </style>
 </head>
 <body>
-
     <div class="background-gallery" id="gallery"></div>
     <div class="overlay"></div>
 
@@ -297,7 +707,8 @@
     </div>
 
     <button class="archive-toggle-btn" onclick="toggleDrawer()">A</button>
-    <div class="backdrop" id="backdrop" onclick="toggleDrawer()"></div>
+    <button class="randomizer-toggle-btn" onclick="toggleRandomizer()">🎲</button>
+    <div class="backdrop" id="backdrop" onclick="closeAllDrawers()"></div>
 
     <div class="archive-drawer" id="drawer">
         <div class="drawer-header">
@@ -315,7 +726,415 @@
         </div>
     </div>
 
+    <div class="randomizer-drawer" id="randomizerDrawer">
+        <div class="drawer-header">
+            <div class="drawer-title">Рандомайзер Даты</div>
+            <button class="close-btn" onclick="toggleRandomizer()">&times;</button>
+        </div>
+        <div class="drawer-content">
+            <div class="randomizer-info">
+                <p>Рандомайзер работает только 1 числа каждого месяца</p>
+                <div class="current-month">Текущий месяц: <span id="currentMonth">Загрузка...</span></div>
+                <div class="next-available">Следующий запуск: <span id="nextAvailable">1 число следующего месяца</span></div>
+            </div>
+            
+            <div class="randomizer-result" id="randomizerResult" style="display: none;">
+                <div class="result-title">Выпавшая дата:</div>
+                <div class="result-day" id="resultDay">0</div>
+                <div class="result-note">Это число будет отображаться весь месяц</div>
+            </div>
+            
+            <div class="randomizer-controls">
+                <button class="generate-btn" onclick="generateRandomDay()" id="generateBtn">🎲 Получить дату</button>
+            </div>
+        </div>
+    </div>
+
     <script>
+        let TEST_MODE = true;
+        let CELEBRATION_MODE = false;
+
+        function toggleDrawer() {
+            document.getElementById('drawer').classList.toggle('open');
+            document.getElementById('backdrop').classList.toggle('active');
+            document.getElementById('randomizerDrawer').classList.remove('open');
+        }
+
+        function toggleRandomizer() {
+            document.getElementById('randomizerDrawer').classList.toggle('open');
+            document.getElementById('backdrop').classList.toggle('active');
+            document.getElementById('drawer').classList.remove('open');
+            
+            if (document.getElementById('randomizerDrawer').classList.contains('open')) {
+                updateRandomizerUI();
+            }
+        }
+
+        function closeAllDrawers() {
+            document.getElementById('drawer').classList.remove('open');
+            document.getElementById('randomizerDrawer').classList.remove('open');
+            document.getElementById('backdrop').classList.remove('active');
+        }
+
+        function updateRandomizerUI() {
+            const today = new Date();
+            const currentMonth = today.toLocaleString('ru-RU', { month: 'long' });
+            document.getElementById('currentMonth').textContent = currentMonth.charAt(0).toUpperCase() + currentMonth.slice(1);
+            
+            const nextMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1);
+            const nextMonthStr = nextMonth.toLocaleString('ru-RU', { month: 'long' });
+            document.getElementById('nextAvailable').textContent = `1 ${nextMonthStr}`;
+            
+            const savedDay = localStorage.getItem('randomDay');
+            const savedMonth = localStorage.getItem('randomizerMonth');
+            const currentMonthNum = today.getMonth().toString();
+            const currentDay = today.getDate();
+            
+            const generateBtn = document.getElementById('generateBtn');
+            const resultDiv = document.getElementById('randomizerResult');
+            const endTestBtn = document.getElementById('endTestBtn');
+            
+            if (savedDay && savedMonth === currentMonthNum) {
+                resultDiv.style.display = 'block';
+                document.getElementById('resultDay').textContent = savedDay;
+                generateBtn.disabled = true;
+                generateBtn.textContent = '🎲 Уже получено';
+                
+                if (parseInt(savedDay) === currentDay) {
+                    document.getElementById('resultDay').innerHTML = `${savedDay}<br><span style="font-size: 1rem; color: gold;">🎉 СЕГОДНЯ! 🎉</span>`;
+                }
+            } else {
+                const isFirstDay = today.getDate() === 1;
+                if (isFirstDay || TEST_MODE) {
+                    generateBtn.disabled = false;
+                    generateBtn.textContent = '🎲 Получить дату';
+                } else {
+                    generateBtn.disabled = true;
+                    generateBtn.textContent = '🎲 Только 1 числа';
+                }
+                resultDiv.style.display = 'none';
+            }
+            
+            if (localStorage.getItem('testModeActive') === 'true') {
+                endTestBtn.style.display = 'block';
+            } else {
+                endTestBtn.style.display = 'none';
+            }
+        }
+
+        function checkCelebrationDay() {
+            const savedDay = localStorage.getItem('randomDay');
+            const savedMonth = localStorage.getItem('randomizerMonth');
+            const today = new Date();
+            const currentMonthNum = today.getMonth().toString();
+            const currentDay = today.getDate();
+            
+            const isTestMode = localStorage.getItem('testModeActive') === 'true';
+            
+            if (CELEBRATION_MODE) {
+                removeCelebrationStyle();
+            }
+            
+            if ((isTestMode && savedDay && savedMonth === currentMonthNum) || 
+                (savedDay && savedMonth === currentMonthNum && parseInt(savedDay) === currentDay)) {
+                CELEBRATION_MODE = true;
+                applyCelebrationStyle();
+            }
+        }
+
+        
+
+        function applyCelebrationStyle() {
+            document.documentElement.style.setProperty('--meme-word-color', '#ffd700');
+            document.documentElement.style.setProperty('--accent-color', '#ff6b6b');
+            document.documentElement.style.setProperty('--timer-glow', 'rgba(255, 215, 0, 0.5)');
+            
+            const timer = document.querySelector('.timer-display');
+            timer.style.boxShadow = 'inset 0 0 100px rgba(255, 215, 0, 0.3), 0 0 50px rgba(255, 215, 0, 0.3)';
+            timer.style.border = '2px solid gold';
+            
+            const acronym = document.querySelector('.acronym-title');
+            acronym.style.boxShadow = '0 0 40px rgba(255, 215, 0, 0.7)';
+            acronym.style.border = '3px solid gold';
+            acronym.style.background = 'rgba(0, 0, 0, 0.9)';
+            
+            const buttons = document.querySelectorAll('button');
+            buttons.forEach(btn => {
+                if (!btn.classList.contains('close-btn')) {
+                    btn.style.borderColor = '#ffd700';
+                    btn.style.boxShadow = '0 0 15px rgba(255, 215, 0, 0.5)';
+                }
+            });
+            
+            const today = new Date();
+            const day = today.getDate();
+            const month = today.toLocaleString('ru-RU', { month: 'long' });
+            const year = today.getFullYear();
+            const weekDay = today.toLocaleString('ru-RU', { weekday: 'long' });
+            
+            const dateText = document.createElement('div');
+            dateText.id = 'celebrationText';
+            Object.assign(dateText.style, {
+            position: 'fixed',
+            top: '150px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            width: 'max-content',
+            maxWidth: '90vw',
+            margin: '0 auto',
+            textAlign: 'center',
+            color: 'gold',
+            fontSize: '1.8rem',
+            fontWeight: 'bold',
+            textShadow: '0 0 20px rgba(255,215,0,0.8)',
+            zIndex: '20',
+            animation: 'celebrationPulse 2s infinite',
+            pointerEvents: 'none',
+            padding: '12px 25px',
+            background: 'rgba(0,0,0,0.7)',
+            borderRadius: '50px',
+            backdropFilter: 'blur(15px)',
+            border: '2px solid gold',
+            whiteSpace: 'nowrap',
+            boxSizing: 'border-box' 
+            });
+            dateText.innerHTML = `${weekDay.charAt(0).toUpperCase() + weekDay.slice(1)}, ${day} ${month} ${year}`;
+            document.body.appendChild(dateText);
+
+            
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes celebrationPulse {
+                    0%, 100% { opacity: 1; transform: scale(1); }
+                    50% { opacity: 0.9; transform: scale(1.02); }
+                }
+                
+                .celebration-confetti {
+                    position: fixed;
+                    width: 15px;
+                    height: 15px;
+                    background: linear-gradient(45deg, #ffd700, #ff6b6b, #9b5de5);
+                    border-radius: 50%;
+                    pointer-events: none;
+                    z-index: 9999;
+                    animation: confettiFall 5s linear infinite;
+                }
+                    
+                
+                @keyframes confettiFall {
+                    0% {
+                        transform: translateY(-100px) rotate(0deg);
+                        opacity: 1;
+                    }
+                    100% {
+                        transform: translateY(100vh) rotate(360deg);
+                        opacity: 0;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'celebration-confetti';
+                    confetti.style.left = `${Math.random() * 100}vw`;
+                    confetti.style.animationDelay = `${Math.random() * 5}s`;
+                    confetti.style.width = `${Math.random() * 20 + 10}px`;
+                    confetti.style.height = confetti.style.width;
+                    document.body.appendChild(confetti);
+                }, i * 100);
+            }
+            
+            loadUpcomingAnime();
+        }
+
+        function removeCelebrationStyle() {
+            CELEBRATION_MODE = false;
+            
+            document.documentElement.style.setProperty('--meme-word-color', '#ff6bc9');
+            document.documentElement.style.setProperty('--accent-color', '#9fa8ff');
+            document.documentElement.style.setProperty('--timer-glow', 'rgba(255, 121, 198, 0.3)');
+            
+            const timer = document.querySelector('.timer-display');
+            if (timer) {
+                timer.style.boxShadow = 'inset 0 0 50px rgba(255,107,201,0.1)';
+                timer.style.border = '1px solid rgba(255,255,255,0.1)';
+            }
+            
+            const acronym = document.querySelector('.acronym-title');
+            if (acronym) {
+                acronym.style.boxShadow = '0 0 30px rgba(255, 107, 201, 0.5)';
+                acronym.style.border = '2px solid var(--meme-word-color)';
+                acronym.style.background = 'rgba(0, 0, 0, 0.8)';
+                
+                acronym.innerHTML = `
+                    <div class="word-group"><span class="first-letter">M</span><span class="rest-word">aids</span></div>
+                    <div class="word-group"><span class="first-letter">I</span><span class="rest-word">sekai</span></div>
+                    <div class="word-group"><span class="first-letter">K</span><span class="rest-word">awaii</span></div>
+                    <div class="word-group"><span class="first-letter">S</span><span class="rest-word">enpai</span></div>
+                    <div class="word-group"><span class="first-letter">I</span><span class="rest-word">dols</span></div>
+                    <div class="word-group"><span class="first-letter">S</span><span class="rest-word">peedrun</span></div>
+                    <div class="word-group"><span class="first-letter">T</span><span class="rest-word">ime</span></div>
+                `;
+            }
+            
+            const buttons = document.querySelectorAll('button');
+            buttons.forEach(btn => {
+                if (!btn.classList.contains('close-btn') && !btn.classList.contains('test-btn') && !btn.classList.contains('end-test-btn')) {
+                    btn.style.borderColor = 'var(--accent-color)';
+                    btn.style.boxShadow = 'none';
+                }
+            });
+            
+            const celebrationText = document.getElementById('celebrationText');
+            if (celebrationText) celebrationText.remove();
+            
+            const confetti = document.querySelectorAll('.celebration-confetti');
+            confetti.forEach(c => c.remove());
+        }
+
+        function generateRandomDay() {
+            const today = new Date();
+            const isFirstDay = today.getDate() === 1;
+            
+            if (!isFirstDay && !TEST_MODE) {
+                alert('Рандомайзер доступен только 1 числа каждого месяца!');
+                return;
+            }
+            
+            const daysInMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
+            const randomDay = Math.floor(Math.random() * daysInMonth) + 1;
+            
+            localStorage.setItem('randomDay', randomDay.toString());
+            localStorage.setItem('randomizerMonth', today.getMonth().toString());
+            localStorage.setItem('randomizerYear', today.getFullYear().toString());
+            
+            updateRandomizerUI();
+            showRandomDayOnScreen(randomDay);
+            
+            alert(`Выпало число: ${randomDay}! Это число будет отображаться весь месяц.\n\nВ этот день сайт изменится на праздничный стиль!`);
+            
+            if (randomDay === today.getDate()) {
+                setTimeout(() => {
+                    location.reload();
+                }, 1000);
+            }
+        }
+
+        function testSpecificDay() {
+            const today = new Date();
+            const currentDay = today.getDate();
+            const currentMonthNum = today.getMonth().toString();
+            
+            const realRandomDay = localStorage.getItem('randomDay');
+            const realRandomMonth = localStorage.getItem('randomizerMonth');
+            
+            if (realRandomDay && realRandomMonth === currentMonthNum) {
+                localStorage.setItem('backupRandomDay', realRandomDay);
+                localStorage.setItem('backupRandomMonth', realRandomMonth);
+            }
+            
+            localStorage.setItem('randomDay', currentDay.toString());
+            localStorage.setItem('randomizerMonth', currentMonthNum);
+            localStorage.setItem('testModeActive', 'true');
+            
+            showRandomDayOnScreen(currentDay);
+            checkCelebrationDay();
+            
+            alert(`Режим тестирования активирован!\nТеперь случайная дата = ${currentDay} (сегодняшнее число).\n\nДля возврата в нормальный режим нажмите кнопку "Завершить тест".`);
+            
+            document.getElementById('endTestBtn').style.display = 'block';
+        }
+
+        function endTestMode() {
+            const backupDay = localStorage.getItem('backupRandomDay');
+            const backupMonth = localStorage.getItem('backupRandomMonth');
+            
+            if (backupDay && backupMonth) {
+                localStorage.setItem('randomDay', backupDay);
+                localStorage.setItem('randomizerMonth', backupMonth);
+                
+                localStorage.removeItem('backupRandomDay');
+                localStorage.removeItem('backupRandomMonth');
+            }
+            
+            localStorage.removeItem('testModeActive');
+            
+            const savedDay = localStorage.getItem('randomDay');
+            if (savedDay) {
+                showRandomDayOnScreen(savedDay);
+            }
+            
+            checkCelebrationDay();
+            document.getElementById('endTestBtn').style.display = 'none';
+            
+            alert('Тестовый режим завершён. Восстановлена реальная случайная дата.');
+        }
+
+        function showRandomDayOnScreen(day) {
+            const isTestMode = localStorage.getItem('testModeActive') === 'true';
+            
+            let display = document.getElementById('randomDayDisplay');
+            
+            if (!display) {
+                display = document.createElement('div');
+                display.id = 'randomDayDisplay';
+                display.style.cssText = `
+                    position: absolute;
+                    bottom: 40px;
+                    right: 40px;
+                    background: rgba(0,0,0,0.7);
+                    color: #ff6bc9;
+                    padding: 15px 25px;
+                    border-radius: 50px;
+                    font-size: 1.5rem;
+                    font-weight: bold;
+                    border: 2px solid #ff6bc9;
+                    box-shadow: 0 0 20px rgba(255,107,201,0.5);
+                    backdrop-filter: blur(10px);
+                    z-index: 25;
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    transition: all 0.3s;
+                `;
+                document.body.appendChild(display);
+            }
+            
+            const today = new Date();
+            const savedMonth = localStorage.getItem('randomizerMonth');
+            const currentMonthNum = today.getMonth().toString();
+            const currentDay = today.getDate();
+            
+            if (isTestMode && parseInt(day) === currentDay && savedMonth === currentMonthNum) {
+                display.style.background = 'rgba(155, 93, 229, 0.3)';
+                display.style.color = '#9b5de5';
+                display.style.borderColor = '#9b5de5';
+                display.style.boxShadow = '0 0 30px rgba(155, 93, 229, 0.7)';
+                display.innerHTML = `
+                    <span>🧪</span>
+                    <span>ТЕСТ: ${day} (сегодня)</span>
+                `;
+            } else if (parseInt(day) === currentDay && savedMonth === currentMonthNum) {
+                display.style.background = 'rgba(255, 215, 0, 0.2)';
+                display.style.color = 'gold';
+                display.style.borderColor = 'gold';
+                display.style.boxShadow = '0 0 30px rgba(255, 215, 0, 0.7)';
+                display.innerHTML = `
+                    <span>🎉</span>
+                    <span>СЕГОДНЯ! (${day})</span>
+                `;
+            } else {
+                display.innerHTML = `
+                    <span>🎲</span>
+                    <span>День: ${day}</span>
+                `;
+            }
+        }
+
+
+
         const mediaFiles = [
             { type: 'video', file: '1.mp4' },
             { type: 'video', file: '2.mp4' },
@@ -332,13 +1151,31 @@
             { type: 'image', file: '13.jpg' },
             { type: 'video', file: '14.mp4' },
             { type: 'image', file: '15.jpg' },
+            { type: 'video', file: '16.mp4' },
+            { type: 'video', file: '17.mp4' },
+            { type: 'video', file: '18.mp4' },
+            { type: 'video', file: '19.mp4' },
+            { type: 'video', file: '20.mp4' },
+            { type: 'video', file: '21.mp4' },
+            { type: 'video', file: '22.mp4' },
+            { type: 'video', file: '23.mp4' },
+            { type: 'video', file: '24.mp4' },
+            { type: 'video', file: '25.mp4' },
+            { type: 'video', file: '26.mp4' },
+            { type: 'video', file: '27.mp4' },
+            { type: 'video', file: '28.mp4' },
+            { type: 'video', file: '29.mp4' },
+            { type: 'video', file: '30.mp4' },
         ];
         const FOLDER_PATH = 'Anime clear/';
 
         const galleryContainer = document.getElementById('gallery');
-        const itemsToRender = Array(5).fill(mediaFiles).flat(); 
-
-        itemsToRender.forEach(item => {
+        const totalItems = 200;
+        
+        for (let i = 0; i < totalItems; i++) {
+            const fileIndex = i % mediaFiles.length;
+            const item = mediaFiles[fileIndex];
+            
             let el;
             if (item.type === 'video') {
                 el = document.createElement('video');
@@ -353,18 +1190,11 @@
             }
             el.className = 'media-item';
             el.onerror = function() { this.style.display = 'none'; };
+            
             galleryContainer.appendChild(el);
-        });
-
-        function toggleDrawer() {
-            document.getElementById('drawer').classList.toggle('open');
-            document.getElementById('backdrop').classList.toggle('active');
         }
 
-        const initialRecords = [
-            
-        ];
-
+        const initialRecords = [];
         let savedRecords = JSON.parse(localStorage.getItem('animeRunRecords')) || initialRecords;
 
         function timeToSeconds(timeStr) {
@@ -377,7 +1207,6 @@
             listEl.innerHTML = '';
             
             savedRecords.sort((a, b) => timeToSeconds(b) - timeToSeconds(a));
-            
             localStorage.setItem('animeRunRecords', JSON.stringify(savedRecords));
 
             savedRecords.forEach((timeString, index) => {
@@ -393,6 +1222,7 @@
                 li.innerHTML = `
                     <span class="rank">#${index + 1}</span>
                     <span class="time-val">${timeString}</span>
+                    ${extraTag}
                 `;
                 listEl.appendChild(li);
             });
@@ -485,6 +1315,20 @@
         const timerApp = new Stopwatch();
 
         document.addEventListener('DOMContentLoaded', () => {
+            const savedDay = localStorage.getItem('randomDay');
+            const savedMonth = localStorage.getItem('randomizerMonth');
+            const today = new Date();
+            const currentMonthNum = today.getMonth().toString();
+            
+            if (localStorage.getItem('testModeActive') !== 'true') {
+                document.getElementById('endTestBtn').style.display = 'none';
+            }
+            
+            if (savedDay && savedMonth === currentMonthNum) {
+                showRandomDayOnScreen(savedDay);
+            }
+            
+            checkCelebrationDay();
             renderRecords();
         });
 
